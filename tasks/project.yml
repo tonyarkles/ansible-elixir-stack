@@ -43,9 +43,8 @@
 
 
 - name: check if custom template for prod.secret.exs exists
-  local_action: stat path="templates/prod.secret.exs.j2"
+  local_action: stat path="playbooks/templates/prod.secret.exs.j2"
   register: custom_prod_secret_template
-
 
 - when: custom_prod_secret_template.stat.exists == False
   name: add prod.secret.exs from default template
@@ -88,7 +87,6 @@
 
 - name: "fetch mix dependencies"
   command: bash -lc 'mix deps.get' chdir="{{ project_path }}"
-  async: 900
   remote_user: "{{ deployer }}"
   environment:
     MIX_ENV: "{{ mix_env }}"
